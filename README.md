@@ -1,5 +1,5 @@
-isochrone
+Isochrone
 =========
 
-isochrone maps
+Isochrone maps.
 This is a simple isochrone maps, created by JavaScript and JQuery.
