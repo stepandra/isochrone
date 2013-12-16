@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+
+  ga('create', 'UA-46280799-1', 'isochrone.com.ua');
+  ga('send', 'pageview');
+</script>
+  <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+    <title>Gisrone-first isochrone map creator in the web!</title>
+    <meta name="description" content="Gisrone-first isochrone map creator in the web!" />
+  
+  <title>Area</title>
+    <link href="main.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="css/nprogress.css">
+  <link href='http://fonts.googleapis.com/css?family=Russo+One|Roboto+Slab:400,300,100&subset=cyrillic' rel='stylesheet' type='text/css'>
+  <script src="http://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+ <script src="http://code.jquery.com/jquery-1.9.1.js"></script>
+  <script src="bubbles.js" ></script>
+  <script src="js/nprogress.js"></script>
+    <link rel="stylesheet" type="text/css" href="css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="css/demo.css" />
+    <link rel="stylesheet" type="text/css" href="css/icons.css" />
+    <link rel="stylesheet" type="text/css" href="css/style5.css" />
+    <script src="js/modernizr.custom1.js"></script>
+<link rel="stylesheet" type="text/css" href="css/default.css" />
+    <link rel="stylesheet" type="text/css" href="css/component.css" />
+    <script src="js/modernizr.custom.js"></script>
+</head>
+<body>
+  <div id="map"></div>
+<div class="container">
+      
+      <nav id="bt-menu" class="bt-menu">
+        <a href="#" class="bt-menu-trigger"><span>Menu</span></a>
+        <ul>
+          <li><label>Origin</label></li>
+          <li><input type="text" class="address" ></a></li>
+      
+          
+    
+   
+          <li><label>Time</label></li>
+          <li><input type="text"  class="time" ></li>
+          <li><button class="show">Go!</button></li><li><button  class="md-trigger" data-modal="modal-1" >Help</button></li>
+
+<li><label>Select type</label></li>
+	<li><select id="gmap_type" class="margin" >
+
+
+			  <option value="OK">Simple isochrone</option>
+                        <option value="art_gallery">Gallery</option>
+                        <option value="atm">ATM</option>
+                        <option value="bank">Banks</option>
+                        <option value="bar">Bar</option>
+                        <option value="cafe">Cafe</option>
+                        <option value="food">Food</option>
+                        <option value="hospital">Hospital</option>
+                        <option value="police">Police</option>
+                        <option value="shop">Shops</option>
+		</select></li>
+	<li><label>Select transport</label></li>
+	<li><select  class="transport" >
+
+
+			 <option value="driving">Driving</option>
+    <option value="walking">Walking</option>
+    
+		</select></li>
+        </ul>
+        <ul>
+			<li><a href="https://twitter.com/Gisorne" class="bt-icon icon-twitter">Twitter</a></li>
+
+        </ul>
+      </nav>
+    </div>
+
+
+
+
+
+    
+    
+
+    
+    
+   <div class="md-modal md-effect-1" id="modal-1">
+			<div class="md-content">
+				<h3>Help</h3>
+				<div>
+					<p>With this application, you can quickly determine where you can get in a given time</p>
+					<ul>
+						<li><strong>Origin:</strong>In this field you have to input a origin location.</li>
+						<li><strong>Time:</strong>Here you input time.</li>
+
+<li><strong>Select Type:</strong>Select the type of isochrone maps(with Google POI or simple isochrone)</li>
+						<li><strong>Go!:</strong>Press this button to win.</li>
+
+
+					</ul>
+					<button class="md-close">Close me!</button>
+				</div>
+			</div>
+		</div>
+    
+	
+
+   
+<div class="md-overlay"></div>
+    
+   
+  </div>
+
+  <script src="js/classie.js"></script>
+    <script src="js/modalEffects.js"></script>
+</body>
+<script src="js/classie1.js"></script>
+  <script src="js/borderMenu.js"></script>
+</html>
