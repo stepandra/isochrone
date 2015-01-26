@@ -1,5 +1,6 @@
 Isochrone
 =========
-
-Isochrone maps.
-This is a simple isochrone maps, created by JavaScript and JQuery.
+# TODO
+1) Delete unusable file
+2) Refactor code
+3) Optimize algorithm
