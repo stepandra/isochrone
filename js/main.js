@@ -2,25 +2,24 @@ window.onload = function() {
   Beam.init();
 };
 Beam = {
-  step: 0.01,
-  increment: 0.01,
-  beamsCount: 3,
-  minDistance: 0,
-  maxDistance: 0,
-  Distance: 0,
-  Beams: [],
-  circle: [],
-
+  step: 0.01,//variable that determines the step of beams
+  increment: 0.01,//variable that incrementing step
+  beamsCount: 9,//count of Beams in isochrone map, that regulates number of polygon angles
+  Beams: [],//array of beam end-points that creates a polygon
+  deletePolygon: [],//array that deletes polygon from map
+  fillColor:'#a3e46b',//fill color of polygon
+  strokeColor:'#6c6c6c',//stoke color of polygon
+  //initialization function
   init: function() {
     var a = this;
     a.angleStep = 360 / a.beamsCount;
     a.createMap();
     a.setHandlers();
   },
-
+  //function that show map
   createMap: function() {
     var a = this;
-    var e = document.getElementById("map");
+    var e = document.getElementById('map');
     a.map = new google.maps.Map(e, {
       zoom: 12,
       center: new google.maps.LatLng(40.69847, -73.95144),
@@ -33,7 +32,7 @@ Beam = {
     var a = this;
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(function(position) {
-        var geocode = "http://maps.googleapis.com/maps/api/geocode/json?latlng=" + position.coords.latitude + "," + position.coords.longitude + "&sensor=false";
+        var geocode = 'http://maps.googleapis.com/maps/api/geocode/json?latlng=' + position.coords.latitude + ',' + position.coords.longitude + '&sensor=false';
         $.getJSON('proxy.php?url=' + encodeURIComponent(geocode), function(response) {
           var formatted_address = response.contents.results[0].formatted_address;
           $('.address').val(formatted_address);
@@ -58,14 +57,14 @@ Beam = {
         a.step = a.increment = 0.05;
         a.convertAddress($('.address').val());
       } else if (a.time < 2) {
-        alert("Input real time");
+        alert('Input real time');
       } else if (a.time > 12000) {
-        alert("Input time beetween 1 and 200 minutes");
+        alert('Input time beetween 1 and 200 minutes');
       }
     });
 
   },
-
+  //function that convert address to LatLng coordinates
   convertAddress: function(address) {
     //TODO: refactor start here.
     var a = this;
@@ -82,6 +81,7 @@ Beam = {
       }
     });
   },
+  //determine and push end-points to the Beams array
   makeBeams: function(step, angle, lastX, lastY, minimize) {
     var a = this;
     if (minimize) {
@@ -93,7 +93,6 @@ Beam = {
     var y = a.originY + step * Math.sin(angle * Math.PI / 180);
     var url = 'https://maps.googleapis.com/maps/api/distancematrix/json?origins=' + a.originX + ',' + a.originY + '&destinations=' + x + ',' + y + '&mode=' + $('.transport').val() + '&sensor=false';
     var uri = 'proxy.php?url=' + encodeURIComponent(url);
-    console.log("makeBeams_status: start");
     setTimeout(function(uri, step, angle, x, y) {
       var request = new XMLHttpRequest();
       request.open('GET', uri, true);
@@ -101,10 +100,8 @@ Beam = {
         if (request.status >= 200 && request.status < 400) {
           // Success!
           var response = JSON.parse(request.responseText);
-          console.log(response.contents.status);
           if (response.contents.rows[0].elements[0].status == 'OK') {
             var time = response.contents.rows[0].elements[0].duration.value;
-            a.Distance = response.contents.rows[0].elements[0].distance.value || a.Distance;
             if (a.time > time) {
               a.makeBeams(step, angle, x, y);
             } else if (lastX === undefined && lastY === undefined) {
@@ -125,7 +122,6 @@ Beam = {
             var beamY = lastY || a.originY;
             a.Beams.push(new google.maps.LatLng(beamX, beamY));
             if (a.Beams.length == a.beamsCount) {
-              //TODO: rename variables
               a.makePolygon();
             } else {
               var newAngle = angle + a.angleStep;
@@ -133,51 +129,43 @@ Beam = {
             }
           }
         } else {
-          console.error("Error!");
-          // We reached our target server, but it returned an error
+          console.error('Error!');
+          //Reached our target server, but it returned an error
         }
       };
       request.onerror = function() {
         // There was a connection error of some sort
-        console.error("Error!");
+        console.error('Error!');
       };
       request.send();
-      //TODO:Delte DEBUG code
     }, 100, uri, step, angle, x, y, lastX, lastY);
   },
   //TODO: clear makePolygon function
+  //draw polygon function
   makePolygon: function() {
     var a = this;
-    var image = new google.maps.MarkerImage(
-      'http://isochrone.com.ua/pin.png',
-      new google.maps.Size(30, 48),
-      new google.maps.Point(0, 0),
-      new google.maps.Point(24, 48)
-    );
     var your_position = new google.maps.Marker({
       position: new google.maps.LatLng(a.originX, a.originY),
-      icon: image,
-      map: a.map,
+      map: a.map
     });
     var polygon = new google.maps.Polygon({
       paths: a.Beams,
-      strokeColor: "#6c6c6c",
+      strokeColor: a.strokeColor,
       strokeOpacity: 0.8,
       strokwWeight: 2,
-      fillColor: "#a3e46b",
+      fillColor: a.fillColor,
       fillOPacity: 0.2
     });
     polygon.setMap(a.map);
-    a.circle.push(polygon);
-
+    a.deletePolygon.push(polygon);
   },
+  //clear old polygon from the map
   clearMap: function() {
-    var a = this;
-    console.log(a.circle);
-    for (var i = 0; i < a.circle.length; i++) {
-      a.circle[i].setMap(null);
+    var a = this; 
+    for (var i = 0; i < a.deletePolygon.length; i++) {
+      a.deletePolygon[i].setMap(null);
     }
     a.Beams=[];
-    a.circle = [];
+    a.deletePolygon = [];
   }
 };
